@@ -1,9 +1,23 @@
+$(document).ready(function() {
+	$.get( "/api/event/get", function( events ) {
+
+	  	$.each(JSON.parse(events), function( index, event ) {
+		  	$('#event-list').prepend(makeEventRow(event));
+		  	$("time.timeago").timeago();
+		});
+
+	});
+
+    $("time.timeago").timeago();
+});
+
 var socket = io.connect();
 
 socket.on('connect', function(message) {
     //console.log('Connected');
     $('#not-connected').hide();
     $('#connected').show();
+
 })
 
 /*socket.on('message', function(message) {
@@ -11,12 +25,10 @@ socket.on('connect', function(message) {
 })*/
 
 socket.on('event', function(event) {
-    //console.log('There is a new event : ' + event);
-    //console.log(event);
-    //console.log(event.new_val);
-    document.getElementById('event-list').innerHTML += makeEventRow(event.new_val);
+    $('#event-list').prepend(makeEventRow(event.new_val));
+    $("time.timeago").timeago();
 })
 
 var makeEventRow = function(data) {
-  return '<div class="message alert alert-info">' + '<h4>' + data.title + '</h4> User : ' + data.user + '<br>Date : ' + data.createdAt + '</div>';
+  return '<li class="event">' + '<h4>' + data.title +':' + data.app + ':' + data.branch + '</h4> User : ' + data.user + '<br>Date : <time class="timeago" datetime="' + data.createdAt + '">' + data.createdAt + '</time><img height="32" class="thumbnail" src="' + data.avatar + '"/></li>';
 }

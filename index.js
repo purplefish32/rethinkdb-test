@@ -48,7 +48,6 @@ io.on('connection', function (socket) {
   	console.log("Client connected");
 });
 
-
 /*
  * Create a RethinkDB connection, and save it in req._rdbConn
  */
