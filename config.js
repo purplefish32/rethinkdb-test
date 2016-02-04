@@ -1,3 +1,4 @@
+var module;
 module.exports = {
     rethinkdb: {
         host: "localhost",

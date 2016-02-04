@@ -10,12 +10,11 @@ const router = require('koa-router');
 const http = require('http');
 const r = require('rethinkdb');
 
-
 // Load config for RethinkDB and koa
 const config = require(__dirname + "/config.js");
 
 //and initialize it with
-const app = new koa()
+const app = new koa();
 
 // Static content
 app.use(serve(__dirname+'/public'));
@@ -44,8 +43,8 @@ app.use(closeConnection);
 var server = http.createServer(app.callback());
 var io = require('socket.io')(server);
 
-io.on('connection', function (socket) {
-  	console.log("Client connected");
+io.on('connection', function (socket){
+    console.log("Client connected");
 });
 
 /*
@@ -53,8 +52,7 @@ io.on('connection', function (socket) {
  */
 function* createConnection(next) {
     try{
-        var conn = yield r.connect(config.rethinkdb);
-        this._rdbConn = conn;
+        this._rdbConn = yield r.connect(config.rethinkdb);
     }
     catch(err) {
         this.status = 500;
